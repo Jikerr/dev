@@ -1,260 +1,260 @@
 <!DOCTYPE html>
 <html lang="zh" class="no-js demo-1" xmlns:th="http://www.thymeleaf.org">
-	<head>
-		<meta charset="UTF-8" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<script th:src="@{js/jquery.min.js}"></script>
-		<script th:src="@{js/Helper.js}"></script>
-		<script th:src="@{js/keyboard.js}"></script>
-		<script th:src="@{js/const.js}"></script>
-		<script th:src="@{js/level.js}"></script>
-		<script th:src="@{js/crackAnimation.js}"></script>
-		<script th:src="@{js/prop.js}"></script>
-		<script th:src="@{js/bullet.js}"></script>
-		<script th:src="@{js/tank.js}"></script>
-		<script th:src="@{js/num.js}"></script>
-		<script th:src="@{js/menu.js}"></script>
-		<script th:src="@{js/map.js}"></script>
-		<script th:src="@{js/Collision.js}"></script>
-		<script th:src="@{js/stage.js}"></script>
-		<script th:src="@{js/main.js}"></script>
-		<style type="text/css">
-			#canvasDiv canvas{
-				position:absolute;
-			}
-		</style>
-	</head>
-	<body>
-		<div class="container">
-			<head><h3>操作说明：玩家1：wasd上左下右，space射击；玩家2：方向键，enter射击。n下一关，p上一关。</h3></head>
-			<div class="main clearfix">
-				<div id="canvasDiv" style="float: left;">
-					<canvas id="wallCanvas" ></canvas> 
-					<canvas id="tankCanvas" ></canvas>
-					<canvas id="grassCanvas" ></canvas>
-					<canvas id="overCanvas" ></canvas> 
-					<canvas id="stageCanvas" ></canvas>
-				</div>
-				<div style="float: left;border:2px solid #F00;width: 30%;height: 446px;position:relative;">
-					<ul style="list-style: none;height: 70%;overflow:auto;" id="msgBox_ul">
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<script th:src="@{js/jquery.min.js}"></script>
+	<script th:src="@{js/Helper.js}"></script>
+	<script th:src="@{js/keyboard.js}"></script>
+	<script th:src="@{js/const.js}"></script>
+	<script th:src="@{js/level.js}"></script>
+	<script th:src="@{js/crackAnimation.js}"></script>
+	<script th:src="@{js/prop.js}"></script>
+	<script th:src="@{js/bullet.js}"></script>
+	<script th:src="@{js/tank.js}"></script>
+	<script th:src="@{js/num.js}"></script>
+	<script th:src="@{js/menu.js}"></script>
+	<script th:src="@{js/map.js}"></script>
+	<script th:src="@{js/Collision.js}"></script>
+	<script th:src="@{js/stage.js}"></script>
+	<script th:src="@{js/main.js}"></script>
+	<style type="text/css">
+		#canvasDiv canvas{
+			position:absolute;
+		}
+	</style>
+</head>
+<body>
+<div class="container">
+	<head><h3>操作说明：玩家1：wasd上左下右，space射击；玩家2：方向键，enter射击。n下一关，p上一关。</h3></head>
+	<div class="main clearfix">
+		<div id="canvasDiv" style="float: left;">
+			<canvas id="wallCanvas" ></canvas>
+			<canvas id="tankCanvas" ></canvas>
+			<canvas id="grassCanvas" ></canvas>
+			<canvas id="overCanvas" ></canvas>
+			<canvas id="stageCanvas" ></canvas>
+		</div>
+		<div style="float: left;border:2px solid #F00;width: 30%;height: 446px;position:relative;">
+			<ul style="list-style: none;height: 70%;overflow:auto;" id="msgBox_ul">
 
-					</ul>
-					<div style="border:5px solid #fdff09;width: 98%;height: 100px;overflow:auto;position:absolute;bottom: 0">
-						<textarea style="width: 85%;height: 90%;" id="customerMsg_textarea"></textarea>
-						<button style="width: 13%;height: 90%;float: right;" onclick="sendMessage()">发送</button>
-					</div>
-				</div>
-				<div style="float: left;border:2px solid #F00;width: 12%;height: 446px;overflow:auto;">
-					<div style="height: 49%;border:2px solid #1c071b;">
-						<label style="color: #FF0000;padding-left: 20%;"> 在线的玩家列表</label>
-						<ul style="list-style: none;overflow:auto;height: 72%;" id="onlineList_ul">
-
-						</ul>
-					</div>
-					<div style="height: 49%;border:2px solid #0a1015;">
-						<label style="color: #FF0000;padding-left: 20%;"> 已经准备的玩家</label>
-						<ul style="list-style: none;overflow:auto;height: 72%;" id="readyGameList_ul">
-
-						</ul>
-					</div>
-				</div>
+			</ul>
+			<div style="border:5px solid #fdff09;width: 98%;height: 100px;overflow:auto;position:absolute;bottom: 0">
+				<textarea style="width: 85%;height: 90%;" id="customerMsg_textarea"></textarea>
+				<button style="width: 13%;height: 90%;float: right;" onclick="sendMessage()">发送</button>
 			</div>
-		</div><!-- /container -->
+		</div>
+		<div style="float: left;border:2px solid #F00;width: 12%;height: 446px;overflow:auto;">
+			<div style="height: 49%;border:2px solid #1c071b;">
+				<label style="color: #FF0000;padding-left: 20%;"> 在线的玩家列表</label>
+				<ul style="list-style: none;overflow:auto;height: 72%;" id="onlineList_ul">
 
-		<script th:src="@{js/ws/sockjs.min.js}"></script>
-		<script th:src="@{js/ws/stomp.min.js}"></script>
-		<script th:src="@{js/jquery/jquery.js}"></script>
-		<script th:src="@{js/supp.js}"></script>
-		<script type="text/javascript">
+				</ul>
+			</div>
+			<div style="height: 49%;border:2px solid #0a1015;">
+				<label style="color: #FF0000;padding-left: 20%;"> 已经准备的玩家</label>
+				<ul style="list-style: none;overflow:auto;height: 72%;" id="readyGameList_ul">
 
-			var userId = '';
+				</ul>
+			</div>
+		</div>
+	</div>
+</div><!-- /container -->
 
-			$(function () {
-                connect();
-            });
+<script th:src="@{js/ws/sockjs.min.js}"></script>
+<script th:src="@{js/ws/stomp.min.js}"></script>
+<script th:src="@{js/jquery/jquery.js}"></script>
+<script th:src="@{js/supp.js}"></script>
+<script type="text/javascript">
 
-            $(document).keydown(function(e){
-                if(e.keyCode == keyboard.ENTER){
-                    sendMessage();
-				}
-			});
+    var userId = '';
 
-            var stompClient = null;
-            //连接成功
-            function setConnected(connected) {
-                addMsgBox("系统提示 : 你潇洒的上线了","standard");
-                addMsgBox("系统提示 : 输入/帮助 查看帮助 .","standard");
-                getOnlineUsers();
-                //document.getElementById("connect").disabled = connected;
-                //document.getElementById("disconnect").disabled = !connected;
-                //document.getElementById("conversationDiv").style.visibility=connected?'visible':'hidden';
-                //$("#response").html();
+    $(function () {
+        connect();
+    });
 
-            }
-            function connect(){
-                var userName = null;
-                while(userName==null || userName==''){
-                    userName = prompt("请输入你的名字 , 我们将为你注册且登录:");
+    $(document).keydown(function(e){
+        if(e.keyCode == keyboard.ENTER){
+            sendMessage();
+        }
+    });
+
+    var stompClient = null;
+    //连接成功
+    function setConnected(connected) {
+        addMsgBox("系统提示 : 你潇洒的上线了","standard");
+        addMsgBox("系统提示 : 输入/帮助 查看帮助 .","standard");
+        getOnlineUsers();
+        //document.getElementById("connect").disabled = connected;
+        //document.getElementById("disconnect").disabled = !connected;
+        //document.getElementById("conversationDiv").style.visibility=connected?'visible':'hidden';
+        //$("#response").html();
+
+    }
+    function connect(){
+        var userName = null;
+        while(userName==null || userName==''){
+            userName = prompt("请输入你的名字 , 我们将为你注册且登录:");
+        }
+
+        $.ajax({
+            url:'/login',
+            data: {
+                'userName':userName,
+                'password':'222'
+            },
+            type:'post',
+            dataType:'json',
+            success : function (data) {
+                userId = data.id;
+                if(data.userName !=undefined){
+                    //stompClient = Stomp.over("/endpointWisely");
+                    var socket = new SockJS('/endpointWisely');
+                    stompClient = Stomp.over(socket);
+
+                    stompClient.connect({},function (frame) {
+                        setConnected(true);
+                        console.log("Connected : "+frame);
+
+                        stompClient.subscribe('/topic/getResponse',function (response) {
+                            var data = JSON.parse(response.body);
+                            var msgType = data.messageType;
+
+                            switch (msgType){
+                                case "PAGE_ONLINE_USERLIST":
+                                    var message = data.message;
+                                    message =JSON.parse(message);
+                                    onLineListUpdate(message.onlineUsers);
+                                    break;
+                                case "PAGE_USER_ONLINE_NOTIFY":
+                                    var message = data.message;
+                                    message =JSON.parse(message);//要把字符串转为JSON对象
+                                    var who = message.userName;
+                                    addMsgBox(who+" 现在上线了","standard");
+                                    //在线列表用户变化 , 重新更新
+                                    getOnlineUsers();
+                                    break;
+                                case "PAGE_USER_OFFLINE_NOTIFY":
+                                    var message = data.message;
+                                    message =JSON.parse(message);
+                                    var who = message.userName;
+                                    addMsgBox(who+" 下线回家了","standard");
+                                    //在线列表用户变化 , 重新更新
+                                    getOnlineUsers();
+                                    break;
+                                case "PAGE_USER_SENDMESSAGE":
+                                    var message = data.message;
+                                    var who = data.user.userName;
+                                    var userIdTemp = data.user.id;
+                                    if(userIdTemp!=userId){
+                                        addMsgBox(who+" 说 : "+message,"standard");//自己的话不显示
+                                    }
+                                    break;
+                                default :
+                                    break;
+                            }
+                        });
+                    });
                 }
-
-                $.ajax({
-                    url:'/login',
-                    data: {
-                        'userName':userName,
-                        'password':'222'
-                    },
-                    type:'post',
-                    dataType:'json',
-                    success : function (data) {
-                        userId = data.id;
-                        if(data.userName !=undefined){
-                            //stompClient = Stomp.over("/endpointWisely");
-                            var socket = new SockJS('/endpointWisely');
-                            stompClient = Stomp.over(socket);
-
-                            stompClient.connect({},function (frame) {
-                                setConnected(true);
-                                console.log("Connected : "+frame);
-
-                                stompClient.subscribe('/topic/getResponse',function (response) {
-                                    var data = JSON.parse(response.body);
-                                    var msgType = data.messageType;
-
-                                    switch (msgType){
-										case "PAGE_ONLINE_USERLIST":
-                                            var message = data.message;
-                                            message =JSON.parse(message);
-                                            onLineListUpdate(message.onlineUsers);
-										    break;
-										case "PAGE_USER_ONLINE_NOTIFY":
-                                            var message = data.message;
-                                            message =JSON.parse(message);//要把字符串转为JSON对象
-											var who = message.userName;
-                                        	addMsgBox(who+" 现在上线了","standard");
-                                        	//在线列表用户变化 , 重新更新
-											getOnlineUsers();
-										    break;
-										case "PAGE_USER_OFFLINE_NOTIFY":
-                                            var message = data.message;
-                                            message =JSON.parse(message);
-                                            var who = message.userName;
-                                            addMsgBox(who+" 下线回家了","standard");
-                                            //在线列表用户变化 , 重新更新
-											getOnlineUsers();
-                                            break;
-										case "PAGE_USER_SENDMESSAGE":
-                                            var message = data.message;
-                                            var who = data.user.userName;
-                                            var userIdTemp = data.user.id;
-                                            if(userIdTemp!=userId){
-                                                addMsgBox(who+" 说 : "+message,"standard");//自己的话不显示
-											}
-										    break;
-										default :
-										    break;
-									}
-                                });
-                            });
-                        }
-                    }
-                });
             }
-            function disconnect(){
-                if(stompClient!=null){
-                    stompClient.disconnect();
+        });
+    }
+    function disconnect(){
+        if(stompClient!=null){
+            stompClient.disconnect();
+        }
+        setConnected(false);
+        console.log("Disconnected");
+    }
+
+
+    function onLineListUpdate(onLineUsers) {
+        $("#onlineList_ul").empty();
+        for(var i =0; onLineUsers.length>i;i++){
+            var user = onLineUsers[i];
+            var color = getRandomColorCustomer();
+            var appendHtml = '<li style="color: #333333;background-color: '+color+';">'+user.userName+' ● 在线</li>';
+            $("#onlineList_ul").append(appendHtml);
+        }
+    }
+
+    function addMsgBox(data,msgType,target){
+        var whereUl = target;
+        if(target==undefined || target==null){
+            //default
+            whereUl = "msgBox_ul";
+        }
+
+        var appendHtml = "";
+        if(msgType=="standard"){
+            var color = getRandomColorCustomer();
+            appendHtml = '<li style="color: #333333;background-color: '+color+';">'+data+'</li>';
+            $("#"+whereUl).append(appendHtml);
+        }
+        if(msgType=="error"){
+            var timestamp=new Date().getTime();
+            appendHtml = '<li id="errorMsg_'+timestamp+'" style="color: #FF0000;background-color: '+color+';">错误 : '+data+'</li>';
+            $("#"+whereUl).append(appendHtml);
+            $("#errorMsg_"+timestamp).hide(4200);
+        }
+        $("#"+whereUl).scrollTop($("#msgBox_ul")[0].scrollHeight);
+    }
+
+    function sendMessage(){
+        var customerMsg = $("#customerMsg_textarea").val();
+        //alert(customerMsg);
+        if(customerMsg.trim()=='' || customerMsg==null){
+            addMsgBox("不可以发空消息...","error");
+        }
+        if (customerMsg.trim()!='' && customerMsg!=null && customerMsg.length!=0){
+            var isCommand = false;
+            for(var i = 0;command.length>i;i++){
+                if(customerMsg.indexOf(command[i].name)!=-1){
+                    var fn = window[command[i].handle];
+                    fn();
+                    isCommand = true;
+                    break;
                 }
-                setConnected(false);
-                console.log("Disconnected");
             }
-
-
-            function onLineListUpdate(onLineUsers) {
-                $("#onlineList_ul").empty();
-                for(var i =0; onLineUsers.length>i;i++){
-					var user = onLineUsers[i];
-					var color = getRandomColorCustomer();
-                    var appendHtml = '<li style="color: #333333;background-color: '+color+';">'+user.userName+' ● 在线</li>';
-                    $("#onlineList_ul").append(appendHtml);
-				}
+            if(!isCommand){
+                stompClient.send("/chat",{},JSON.stringify({'userId':userId,'msg':customerMsg}));
+                addMsgBox("你说 : "+customerMsg,"standard");
             }
-            
-            function addMsgBox(data,msgType,target){
-                var whereUl = target;
-                if(target==undefined || target==null){
-					//default
-                    whereUl = "msgBox_ul";
-				}
+        }
 
-                var appendHtml = "";
-				if(msgType=="standard"){
-                    var color = getRandomColorCustomer();
-                    appendHtml = '<li style="color: #333333;background-color: '+color+';">'+data+'</li>';
-                    $("#"+whereUl).append(appendHtml);
-				}
-				if(msgType=="error"){
-                    var timestamp=new Date().getTime();
-                    appendHtml = '<li id="errorMsg_'+timestamp+'" style="color: #FF0000;background-color: '+color+';">错误 : '+data+'</li>';
-                    $("#"+whereUl).append(appendHtml);
-                    $("#errorMsg_"+timestamp).hide(4200);
-				}
-                $("#"+whereUl).scrollTop($("#msgBox_ul")[0].scrollHeight);
-			}
+        $("#customerMsg_textarea").val("")//清空
+        $("#msgBox_ul").scrollTop($("#msgBox_ul")[0].scrollHeight);
+    }
 
-			function sendMessage(){
-               var customerMsg = $("#customerMsg_textarea").val();
-				//alert(customerMsg);
-               if(customerMsg.trim()=='' || customerMsg==null){
-                   addMsgBox("不可以发空消息...","error");
-			   }
-			   if (customerMsg.trim()!='' && customerMsg!=null && customerMsg.length!=0){
-				   var isCommand = false;
-                   for(var i = 0;command.length>i;i++){
-                       if(customerMsg.indexOf(command[i].name)!=-1){
-                           var fn = window[command[i].handle];
-                           fn();
-                           isCommand = true;
-                           break;
-                       }
-				   }
-					if(!isCommand){
-                        stompClient.send("/chat",{},JSON.stringify({'userId':userId,'msg':customerMsg}));
-                        addMsgBox("你说 : "+customerMsg,"standard");
-					}
-			   }
+    function getOnlineUsers() {
+        setTimeout(function () {
+            stompClient.send("/getOnlinePlayer",{},null);
+        },1000)
+    }
 
-                $("#customerMsg_textarea").val("")//清空
-                $("#msgBox_ul").scrollTop($("#msgBox_ul")[0].scrollHeight);
-            }
+    function showHelp(){
+        for(var i = 0;command.length>i;i++){
+            addMsgBox("系统提示 : 命令 --> '"+command[i].name+"' 作用 -->  "+command[i].remark,"standard")
+        }
+    }
 
-            function getOnlineUsers() {
-			    setTimeout(function () {
-                    stompClient.send("/getOnlinePlayer",{},null);
-                },1000)
-            }
+    function readyGameTips(){
+        addMsgBox("系统提示 : 你希望准备游戏么 ? 猛戳这里 --><button onclick='changeReadyGameStatus()'>准备</button> ","standard");
+    }
 
-            function showHelp(){
-                for(var i = 0;command.length>i;i++){
-                    addMsgBox("系统提示 : 命令 --> '"+command[i].name+"' 作用 -->  "+command[i].remark,"standard")
-                }
-			}
+    var isReadyGame = false;
+    function changeReadyGameStatus(){
+        isReadyGame = !isReadyGame;
+        addMsgBox("你已经准备..","standard","readyGameList_ul");
 
-            function readyGameTips(){
-                addMsgBox("系统提示 : 你希望准备游戏么 ? 猛戳这里 --><button onclick='changeReadyGameStatus()'>准备</button> ","standard");
-            }
+    }
+    var command = [
+        {"name":"/帮助","remark":"查看帮助","type":"function","handle":"showHelp"},
+        {"name":"/准备游戏","remark":"准备游戏","type":"function","handle":"readyGameTips"},
+        {"name":"/取消准备","remark":"取消准备游戏","type":"function","handle":"readyGameTips"},
+    ]
 
-            var isReadyGame = false;
-			function changeReadyGameStatus(){
-                isReadyGame = !isReadyGame;
-                addMsgBox("你已经准备..","standard","readyGameList_ul");
-
-			}
-            var command = [
-				{"name":"/帮助","remark":"查看帮助","type":"function","handle":"showHelp"},
-                {"name":"/准备游戏","remark":"准备游戏","type":"function","handle":"readyGameTips"},
-                {"name":"/取消准备","remark":"取消准备游戏","type":"function","handle":"readyGameTips"},
-			]
-
-		</script>
-	</body>
+</script>
+</body>
 </html>

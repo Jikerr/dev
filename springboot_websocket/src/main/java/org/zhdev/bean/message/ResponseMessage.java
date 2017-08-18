@@ -1,6 +1,5 @@
 package org.zhdev.bean.message;
 
-import org.json.JSONObject;
 import org.zhdev.bean.User;
 
 public class ResponseMessage {
@@ -9,6 +8,7 @@ public class ResponseMessage {
         PAGE_ONLINE_USERLIST,
         PAGE_USER_ONLINE_NOTIFY,
         PAGE_USER_OFFLINE_NOTIFY,
+        PAGE_USER_SENDMESSAGE,
     }
 
     private String messageType;

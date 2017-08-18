@@ -1,6 +1,7 @@
 package org.zhdev.controller;
 
 
+import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -13,6 +14,7 @@ import org.zhdev.bean.User;
 import org.zhdev.bean.WiselyMessage;
 import org.zhdev.bean.WiselyResponse;
 import org.zhdev.bean.message.ResponseMessage;
+import org.zhdev.bean.message.UserSendMessage;
 import org.zhdev.config.WebSocketConfig;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +24,7 @@ import java.util.List;
 
 @Controller
 public class WsController {
+    private final static Logger logger = Logger.getLogger(WsController.class);
 
     private SimpMessagingTemplate messagingTemplate;
 
@@ -66,5 +69,31 @@ public class WsController {
         JSONObject response = new JSONObject(user);
         return response.toString();
     }
+
+
+    @MessageMapping(value="/chat")
+    @SendTo("/topic/getResponse")
+    public ResponseMessage chat(UserSendMessage userSendMessage){
+
+        User user = null;
+        List<User> onlineUsers = WebSocketConfig.onlineUsers;
+        for(User onLineUser : onlineUsers){
+            if(String.valueOf(userSendMessage.getUserId()).equals(String.valueOf(onLineUser.getId()))){
+                logger.info("找到用户....");
+                user = onLineUser;
+            }
+        }
+
+        //有人上线 , 构造上线提醒
+        ResponseMessage responseMessage = new ResponseMessage();
+        responseMessage.setMessage(userSendMessage.getMsg());
+        responseMessage.setRemark("user send msg in chatpanel");
+        responseMessage.setToUser(null);
+        responseMessage.setUser(user);
+        responseMessage.setMessageType(ResponseMessage.Type.PAGE_USER_SENDMESSAGE.toString());
+
+        return responseMessage;
+    }
+
 
 }

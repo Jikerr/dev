@@ -60,7 +60,7 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
         registration.setInterceptors(new ChannelInterceptorAdapter() {
             @Override
             public Message<?> preSend(Message<?> message, MessageChannel channel) {
-                //System.out.println("recv : " + message);
+                System.out.println("recv : " + message);
                 StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
 
                 User user = (User) accessor.getSessionAttributes().get("user");
@@ -101,6 +101,13 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
                     //有人上线 , 通知所有订阅人
                     simpMessagingTemplate.convertAndSend("/topic/getResponse",responseMessage);
                 }
+
+                if (StompCommand.ERROR.equals(accessor.getCommand())) {
+                    logger.info("error..........");
+                    //有人上线 , 通知所有订阅人
+                    //simpMessagingTemplate.convertAndSend("/topic/getResponse",responseMessage);
+                }
+
                 return super.preSend(message, channel);
             }
         });

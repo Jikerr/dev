@@ -185,7 +185,6 @@
             //default
             whereUl = "msgBox_ul";
         }
-
         var appendHtml = "";
         if(msgType=="standard"){
             var color = getRandomColorCustomer();
@@ -246,7 +245,13 @@
     var isReadyGame = false;
     function changeReadyGameStatus(){
         isReadyGame = !isReadyGame;
-        addMsgBox("你已经准备..","standard","readyGameList_ul");
+        if(isReadyGame){
+            addMsgBox("你已经准备..","standard","readyGameList_ul");
+		}
+		if(!isReadyGame){
+            addMsgBox("你取消了准备..","standard","readyGameList_ul");
+		}
+
 
     }
     var command = [
